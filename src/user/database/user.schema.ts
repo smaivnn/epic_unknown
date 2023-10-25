@@ -75,9 +75,10 @@ export class User extends Document {
   roles: string[];
 
   readonly readOnlyData: {
-    id: string;
+    _id: string;
     email: string;
     name: string;
+    roles: string[];
   };
 }
 
@@ -85,9 +86,10 @@ const _UserSchema = SchemaFactory.createForClass(User);
 
 _UserSchema.virtual('readOnlyData').get(function (this: User) {
   return {
-    id: this.id,
+    _id: this.id,
     email: this.email,
     name: this.name,
+    roles: this.roles,
   };
 });
 

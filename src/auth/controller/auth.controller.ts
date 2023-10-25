@@ -60,7 +60,7 @@ export class AuthController {
 
   @ApiOperation({ summary: '유저 목록' })
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.Admin)
+  @Roles(Role.User)
   @Get('user')
   async getUser(@Req() request: Request) {
     return this.authService.getUser(request);

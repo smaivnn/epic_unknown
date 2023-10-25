@@ -27,7 +27,7 @@ export class AccessStrategy extends PassportStrategy(
         payload.sub,
       );
       if (user) {
-        return user;
+        return user.readOnlyData;
       } else {
         throw new Error('해당하는 유저는 없습니다.');
       }
