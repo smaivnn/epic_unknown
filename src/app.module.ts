@@ -6,6 +6,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { ToDoModule } from './to-do/to-do.module';
+import { CharacterModule } from './character/character.module';
+import { StatModule } from './stat/stat.module';
+import { HistoryModule } from './history/history.module';
 
 @Module({
   imports: [
@@ -26,6 +29,9 @@ import { ToDoModule } from './to-do/to-do.module';
     UserModule,
     AuthModule,
     ToDoModule,
+    CharacterModule,
+    StatModule,
+    HistoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
