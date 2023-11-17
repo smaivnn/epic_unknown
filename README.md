@@ -1,62 +1,114 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+#  ecpic - unknown
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+**꾸준한 도전으로 나를 바꾸자**<br/>
+**challenge little by little every day to change yourself**<br/>
+- To-do 리스트와 캐릭터 육성 기능이 합쳐진 게임형 자기 관리 어플리케이션입니다.<br/>
+- 하루의 목표는 운동, 공부 그 무엇이든 상관없습니다.<br/>
+- 자격증, 수상과 같은 활동 진행시에도 경험치 증가로 캐릭터를 육성할 수 있습니다.<br/>
+<br/>
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 개발 스택
+### frontend
+<img src="https://img.shields.io/badge/react_native-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB"/></a>
+### backend
+<img src="https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white"/></a>
+<img src="https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white"/></a>
+<br/>
 
-## Description
+## 진행 상황
+### 1차 개발 ( ~12.31)
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+기능|상태
+|---|:---:|
+|데이터베이스 설계|✅|
+|auth|✅|
+|todo|✅|
+|경험치, 레벨업|👨🏻‍💻|
+|캐릭터 육성||
+|게시판||
+|친구||
+|알림||
 
-## Installation
+<br/><br/>
+## 팀 소개
+### frontend
+### backend
+<table>
+  <tbody>
+    <tr>
+      <td align="center"><a href=""><img src="https://github.com/smaivnn/epic_unknown/assets/85821828/9527928a-32bb-4cdd-989c-3aacc9feb4e6"width="100px;" alt=""/><br /><sub><b>최성민 </b></sub></a><br /></td>
+    </tr>
+  </tbody>
+</table>
 
-```bash
-$ npm clone [repository address]
+
+## 주요 기능
+### todolist 완료 시 경험치 증가
+<img width="574" alt="법칙적학습" src="https://github.com/smaivnn/epic_unknown/assets/85821828/cf3c74d5-4df8-4088-8618-5545a10af0db"><br/>
+
+
+**의사 코드 설계**
+
+```
+// 이전 결정과 경험치 데이터 불러오기
+const previousDecisions = database.loadPreviousDecisions();
+const experienceData = database.loadExperienceData();
+
+// 현재 결정을 만들기 위한 함수
+function makeDecision() {
+    // 이전 결정과 경험치 데이터를 기반으로 현재 결정 생성
+    const availableCategories = categories.getAvailableCategories();
+    const selectedCategory = selectCategory(availableCategories);
+    return selectedCategory;
+}
+
+// 카테고리 선택 알고리즘
+function selectCategory(availableCategories) {
+    // 각 카테고리별로 이전 결정 및 경험치를 검토하여 최적의 카테고리 선택
+    // 예를 들어, 각 카테고리별로 경험치를 살펴보고 가장 높은 경험치를 가진 카테고리를 선택
+    let bestCategory = null;
+    let bestExperience = -1;
+    for (const category of availableCategories) {
+        const categoryExperience = calculateCategoryExperience(category, previousDecisions, experienceData);
+        if (categoryExperience > bestExperience) {
+            bestCategory = category;
+            bestExperience = categoryExperience;
+        }
+    }
+    return bestCategory;
+}
+
+// 카테고리 경험치 계산
+function calculateCategoryExperience(category, previousDecisions, experienceData) {
+    // 이전 결정 중에서 해당 카테고리와 관련된 경험치를 찾아 계산
+    let categoryExperience = 0;
+    for (const decision of previousDecisions) {
+        if (decision.category === category) {
+            const relatedExperience = experienceData[decision.id] || 0;
+            categoryExperience += relatedExperience;
+        }
+    }
+    return categoryExperience;
+}
+
+// 현재 결정을 만들어 적용
+const currentDecision = makeDecision();
+
+// 경험치 업데이트 (경험치는 결과에 따라 증가)
+const result = executeDecision(currentDecision);
+updateExperience(currentDecision.id, result);
+
+// 경험치 업데이트 함수
+function updateExperience(decisionId, result) {
+    if (result === 'success') {
+        experienceData[decisionId] = (experienceData[decisionId] || 0) + 1;
+    }
+    // 경험치 데이터를 데이터베이스에 저장
+    database.saveExperienceData(experienceData);
+}
 ```
 
-## Running the app
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
+## 아키텍처
 
 ## License
 
