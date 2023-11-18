@@ -50,6 +50,7 @@ export class Character extends Document {
 
   readonly readOnlyData: {
     _id: string;
+    name: string;
   };
 }
 
@@ -58,6 +59,7 @@ const _CharacterSchema = SchemaFactory.createForClass(Character);
 _CharacterSchema.virtual('readOnlyData').get(function (this: Character) {
   return {
     _id: this.id,
+    name: this.name,
   };
 });
 

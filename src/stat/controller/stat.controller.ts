@@ -6,18 +6,21 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { StatService } from '../service/stat.service';
 import { CreateStatDto } from '../dto/create-stat.dto';
 import { UpdateStatDto } from '../dto/update-stat.dto';
+import { JwtAuthGuard } from 'src/auth/jwt/access-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller('stat')
 export class StatController {
   constructor(private readonly statService: StatService) {}
 
   @Post()
   create(@Body() createStatDto: CreateStatDto) {
-    return this.statService.create(createStatDto);
+    // return this.statService.create();
   }
 
   @Get()

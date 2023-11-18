@@ -1,11 +1,24 @@
+import { Request } from 'express';
 import { Injectable } from '@nestjs/common';
 import { CreateCharacterDto } from '../dto/create-character.dto';
 import { UpdateCharacterDto } from '../dto/update-character.dto';
+import { CharacterRepository } from '../database/character.repository';
 
 @Injectable()
 export class CharacterService {
-  create(createCharacterDto: CreateCharacterDto) {
-    return 'This action adds a new character';
+  constructor(private readonly characterRepository: CharacterRepository) {}
+  
+  async create(body: CreateCharacterDto, request: Request) {
+    const user = request.user;
+    const { name } = body;
+    const newCharacter = {
+      name,
+    };
+    const createdCharacter = await this.characterRepository.createCharacter(
+      newCharacter,
+      user,
+    );
+    return createdCharacter.readOnlyData;
   }
 
   findAll() {
