@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { Types } from 'mongoose';
 import { Model } from 'mongoose';
 import { Character } from './character.schema';
 import { CreateCharacterDto } from '../dto/create-character.dto';
+import { User } from 'src/user/database/user.schema';
+import { CharacterSubset } from '../../constants/characterSubset';
 
 @Injectable()
 export class CharacterRepository {
@@ -13,7 +16,7 @@ export class CharacterRepository {
 
   async createCharacter(
     character: CreateCharacterDto,
-    user,
+    user: User,
   ): Promise<Character> {
     const userId = user._id;
 
@@ -31,13 +34,50 @@ export class CharacterRepository {
     return createdCharacter;
   }
 
-  async findCharacter(user): Promise<Character> {
+  async addStatsToCharacter(
+    characterId: Types.ObjectId,
+    statsIds: Types.ObjectId | Types.ObjectId[],
+  ): Promise<CharacterSubset> {
+    const statsIdsArray = Array.isArray(statsIds) ? statsIds : [statsIds];
+    const updatedCharacter = await this.characterModel
+      .findByIdAndUpdate(
+        characterId,
+        { $push: { stats: { $each: statsIdsArray } } },
+        { new: true },
+      )
+      .populate('stats')
+      .exec();
+
+    const { readOnlyData } = updatedCharacter;
+    const transformedStats = readOnlyData.stats.map(
+      (stat: any) => stat.readOnlyData,
+    );
+
+    return {
+      ...readOnlyData,
+      stats: transformedStats,
+    };
+  }
+
+  async findCharacter(user: User): Promise<CharacterSubset> {
     const userId = user._id;
-    const foundCharacter = await this.characterModel.findOne({ userId }).exec();
+    const foundCharacter = await this.characterModel
+      .findOne({ userId })
+      .populate('stats')
+      .exec();
+
     if (!foundCharacter) {
       throw new Error('캐릭터가 존재하지 않습니다.');
     }
+    
+    const { readOnlyData } = foundCharacter;
+    const transformedStats = readOnlyData.stats.map(
+      (stat: any) => stat.readOnlyData,
+    );
 
-    return foundCharacter;
+    return {
+      ...readOnlyData,
+      stats: transformedStats,
+    };
   }
 }

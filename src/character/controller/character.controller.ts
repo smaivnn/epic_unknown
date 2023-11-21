@@ -15,7 +15,7 @@ import { StatService } from 'src/stat/service/stat.service';
 import { CreateCharacterDto } from '../dto/create-character.dto';
 import { UpdateCharacterDto } from '../dto/update-character.dto';
 import { JwtAuthGuard } from 'src/auth/jwt/access-auth.guard';
-import { Stat } from '../../constants/stat.enum';
+import { BasicStat } from '../../constants/stats.constants';
 
 @UseGuards(JwtAuthGuard)
 @Controller('character')
@@ -28,13 +28,22 @@ export class CharacterController {
   @Post()
   async create(@Body() body: CreateCharacterDto, @Req() request: Request) {
     const character = await this.characterService.create(body, request);
-    await Promise.all([
-      Object.values(Stat).map((stat) =>
-        this.statService.create({ name: stat, characterId: character._id }),
-      ),
-    ]);
 
-    return character;
+    const statsIds = await Promise.all(
+      Object.values(BasicStat).map(async (stat) => {
+        const stats = await this.statService.create({
+          name: stat,
+          characterId: character._id,
+        });
+        return stats._id;
+      }),
+    );
+
+    const newCharacter = await this.characterService.addStatsToCharacter(
+      character._id,
+      statsIds,
+    );
+    return newCharacter;
   }
 
   @Get()
@@ -42,9 +51,9 @@ export class CharacterController {
     return this.characterService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.characterService.findOne(+id);
+  @Get('id')
+  findOne(@Req() request: Request) {
+    return this.characterService.findOne(request);
   }
 
   @Patch(':id')

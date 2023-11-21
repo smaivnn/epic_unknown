@@ -49,8 +49,10 @@ export class Character extends Document {
   stats: Types.ObjectId[];
 
   readonly readOnlyData: {
-    _id: string;
+    userId: Types.ObjectId;
+    _id: Types.ObjectId;
     name: string;
+    stats: Types.ObjectId[];
   };
 }
 
@@ -60,6 +62,8 @@ _CharacterSchema.virtual('readOnlyData').get(function (this: Character) {
   return {
     _id: this.id,
     name: this.name,
+    userId: this.userId,
+    stats: this.stats,
   };
 });
 

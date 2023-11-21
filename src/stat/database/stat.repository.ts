@@ -12,8 +12,15 @@ export class StatRepository {
   ) {}
 
   async createStat(stat: CreateStatDto): Promise<Stat> {
-    const createdStat = await this.statModel.create(stat);
+    const existingStat = await this.statModel.findOne(stat).exec();
+    if (existingStat) {
+      throw new Error('Stat already exists');
+    }
+    const newStat = {
+      ...stat,
+    };
+    const createdStat = await this.statModel.create(newStat);
 
-    return createdStat;
+    return createdStat.toObject();
   }
 }

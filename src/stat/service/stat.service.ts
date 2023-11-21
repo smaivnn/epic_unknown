@@ -4,6 +4,19 @@ import { StatRepository } from 'src/stat/database/stat.repository';
 import { Injectable } from '@nestjs/common';
 import { CreateStatDto } from '../dto/create-stat.dto';
 import { UpdateStatDto } from '../dto/update-stat.dto';
+import { AllStat } from '../../constants/stats.constants';
+import { Types } from 'mongoose';
+import { Character } from 'src/character/database/character.schema';
+
+interface RequestWithCharacterId extends Request {
+  character?: Character;
+}
+
+type StatName = (typeof AllStat)[keyof typeof AllStat];
+
+function isStatName(name: string): name is StatName {
+  return Object.values(AllStat).includes(name as StatName);
+}
 
 @Injectable()
 export class StatService {
@@ -12,8 +25,15 @@ export class StatService {
     private readonly characterRepository: CharacterRepository,
   ) {}
 
-  async create(body: CreateStatDto) {
-    const { name, characterId } = body;
+  async create(body: CreateStatDto, request: RequestWithCharacterId = null) {
+    const { name } = body;
+
+    const characterId = body.characterId || request.character._id;
+
+    const isStat = isStatName(name);
+    if (!isStat) {
+      throw new Error('Stat name is not valid');
+    }
 
     const newStat = {
       characterId,
@@ -21,7 +41,7 @@ export class StatService {
     };
     const createdStat = await this.statRepository.createStat(newStat);
 
-    return createdStat;
+    return createdStat.readOnlyData;
   }
 
   findAll() {

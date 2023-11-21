@@ -89,7 +89,13 @@ export class Stat extends Document {
   maximumLevel: number;
 
   readonly readOnlyData: {
-    _id: string;
+    _id: Types.ObjectId;
+    characterId: Types.ObjectId;
+    name: string;
+    currentExperience: number;
+    level: number;
+    experienceToLevelUp: number;
+    maximumLevel: number;
   };
 }
 
@@ -98,6 +104,12 @@ const _StatSchema = SchemaFactory.createForClass(Stat);
 _StatSchema.virtual('readOnlyData').get(function (this: Stat) {
   return {
     _id: this.id,
+    characterId: this.characterId,
+    name: this.name,
+    currentExperience: this.currentExperience,
+    level: this.level,
+    experienceToLevelUp: this.experienceToLevelUp,
+    maximumLevel: this.maximumLevel,
   };
 });
 
