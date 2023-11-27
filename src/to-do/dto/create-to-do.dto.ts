@@ -6,4 +6,5 @@ export class CreateToDoDto extends PickType(ToDo, [
   'content',
   'dueDate',
   'category',
+  'difficulty',
 ] as const) {}

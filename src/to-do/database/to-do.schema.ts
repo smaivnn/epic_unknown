@@ -100,6 +100,18 @@ export class ToDo extends Document {
   category: string;
 
   @ApiProperty({
+    example: 0,
+    description: '0: easy, 1: normal, 2: hard',
+    required: true,
+  })
+  @Prop({
+    required: true,
+  })
+  @IsNumber()
+  @IsNotEmpty()
+  difficulty: number;
+
+  @ApiProperty({
     example: '2021-08-01T00:00:00.000Z',
     description: 'completedDate',
   })
@@ -120,6 +132,16 @@ export class ToDo extends Document {
   @IsBoolean()
   isDeleted: boolean;
 
+  @ApiProperty({
+    example: 3,
+    description: 'how long you continue doing todo',
+  })
+  @Prop({
+    required: false,
+  })
+  @IsNumber()
+  continue: number;
+
   readonly readOnlyData: {
     _id: string;
     title: string;
@@ -129,6 +151,8 @@ export class ToDo extends Document {
     dueDate: string;
     category: string;
     completedDate: string;
+    difficulty: string;
+    continue: number;
   };
 }
 
@@ -144,6 +168,8 @@ _ToDoSchema.virtual('readOnlyData').get(function (this: ToDo) {
     dueDate: this.dueDate,
     category: this.category,
     completedDate: this.completedDate,
+    difficulty: this.difficulty,
+    continue: this.continue,
   };
 });
 

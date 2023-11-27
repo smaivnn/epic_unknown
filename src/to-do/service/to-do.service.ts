@@ -5,18 +5,23 @@ import { CreateToDoDto } from '../dto/create-to-do.dto';
 import { UpdateToDoDto } from '../dto/update-to-do.dto';
 import { SingleToDoDto } from '../dto/single-to-do.dto';
 import { ChangeTodoPriorityDto } from '../dto/priority-to-do.dto';
+import { StatService } from 'src/stat/service/stat.service';
 
 @Injectable()
 export class ToDoService {
-  constructor(private readonly toDoRepository: ToDoRepository) {}
+  constructor(
+    private readonly toDoRepository: ToDoRepository,
+    private readonly statService: StatService,
+  ) {}
   async create(body: CreateToDoDto, request: Request) {
-    const { title, content, dueDate, category } = body;
+    const { title, content, dueDate, category, difficulty } = body;
     const user = request.user;
     const newToDo = {
       title,
       content,
       dueDate,
       category,
+      difficulty,
     };
 
     const createdToDo = await this.toDoRepository.createToDo(newToDo, user);
@@ -56,7 +61,18 @@ export class ToDoService {
     const user = request.user;
     const { todoId } = body;
     const completedToDo = await this.toDoRepository.completeToDo(todoId, user);
+    const stat = await this.statService.categorizeStats({
+      category: completedToDo.category,
+    });
+    const experiencePoint =
+      await this.statService.caculateAccordingToDifficulty({
+        difficulty: completedToDo.difficulty,
+      });
 
+    const continuePoint =
+      await this.statService.awardBonusForDaily(completedToDo);
+
+    console.log(stat, experiencePoint, continuePoint);
     return completedToDo.readOnlyData;
   }
 

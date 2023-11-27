@@ -69,7 +69,7 @@ export class CharacterRepository {
     if (!foundCharacter) {
       throw new Error('캐릭터가 존재하지 않습니다.');
     }
-    
+
     const { readOnlyData } = foundCharacter;
     const transformedStats = readOnlyData.stats.map(
       (stat: any) => stat.readOnlyData,

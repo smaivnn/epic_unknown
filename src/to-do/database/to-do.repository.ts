@@ -143,4 +143,31 @@ export class ToDoRepository {
 
     return changedPriorityToDo;
   }
+
+  async findRecentCompletedTodo(): Promise<ToDo> {
+    const recentTodo = await this.todoModel
+      .find()
+      .sort({ completedDate: -1 })
+      .limit(2)
+      .exec();
+    if (recentTodo.length < 2) {
+      return null;
+    }
+    return recentTodo[1];
+  }
+
+  async updateTodoContinue(completedToDo: ToDo, continueCount: number) {
+    const updatedToDo = await this.todoModel
+      .findOneAndUpdate(
+        {
+          _id: completedToDo._id,
+        },
+        {
+          continue: continueCount,
+        },
+        { new: true },
+      )
+      .exec();
+    return updatedToDo;
+  }
 }
