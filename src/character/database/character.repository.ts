@@ -59,8 +59,15 @@ export class CharacterRepository {
     };
   }
 
-  async findCharacter(user: User): Promise<CharacterSubset> {
-    const userId = user._id;
+  async findCharacter(
+    userOrId: User | string | Types.ObjectId,
+  ): Promise<CharacterSubset> {
+    let userId;
+    if (typeof userOrId === 'string' || userOrId instanceof Types.ObjectId) {
+      userId = userOrId;
+    } else {
+      userId = userOrId._id;
+    }
     const foundCharacter = await this.characterModel
       .findOne({ userId })
       .populate('stats')

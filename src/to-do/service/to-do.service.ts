@@ -6,6 +6,7 @@ import { UpdateToDoDto } from '../dto/update-to-do.dto';
 import { SingleToDoDto } from '../dto/single-to-do.dto';
 import { ChangeTodoPriorityDto } from '../dto/priority-to-do.dto';
 import { StatService } from 'src/stat/service/stat.service';
+import { User } from 'src/user/database/user.schema';
 
 @Injectable()
 export class ToDoService {
@@ -58,21 +59,22 @@ export class ToDoService {
   }
 
   async complete(body: SingleToDoDto, request: Request) {
-    const user = request.user;
+    const user = request.user as User;
     const { todoId } = body;
     const completedToDo = await this.toDoRepository.completeToDo(todoId, user);
     const stat = await this.statService.categorizeStats({
       category: completedToDo.category,
     });
-    const experiencePoint =
-      await this.statService.caculateAccordingToDifficulty({
+    const [experiencePoint, continuePoint] = await Promise.all([
+      this.statService.caculateAccordingToDifficulty({
         difficulty: completedToDo.difficulty,
-      });
+      }),
+      this.statService.awardBonusForDaily(completedToDo),
+    ]);
+    const exp = experiencePoint + continuePoint;
 
-    const continuePoint =
-      await this.statService.awardBonusForDaily(completedToDo);
+    await this.statService.addExpereincePoint(user, exp, stat);
 
-    console.log(stat, experiencePoint, continuePoint);
     return completedToDo.readOnlyData;
   }
 

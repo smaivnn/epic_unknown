@@ -10,6 +10,7 @@ import {
   UseInterceptors,
   Req,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
 import { StatService } from '../service/stat.service';
 import { CreateStatDto } from '../dto/create-stat.dto';
@@ -18,6 +19,7 @@ import { JwtAuthGuard } from 'src/auth/jwt/access-auth.guard';
 import { ExtractCharacterIdInterceptor } from '../../common/interceptor/find-characterId.interceptor';
 import { CharacterService } from 'src/character/service/character.service';
 
+@ApiTags('Stat')
 @UseGuards(JwtAuthGuard)
 @Controller('stat')
 @UseInterceptors(ExtractCharacterIdInterceptor)

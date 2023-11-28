@@ -7,10 +7,12 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { HistoryService } from '../service/history.service';
 import { CreateHistoryDto } from '../dto/create-history.dto';
 import { UpdateHistoryDto } from '../dto/update-history.dto';
 
+@ApiTags('History')
 @Controller('history')
 export class HistoryController {
   constructor(private readonly historyService: HistoryService) {}

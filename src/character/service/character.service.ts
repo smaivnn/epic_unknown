@@ -5,6 +5,8 @@ import { CreateCharacterDto } from '../dto/create-character.dto';
 import { UpdateCharacterDto } from '../dto/update-character.dto';
 import { CharacterRepository } from '../database/character.repository';
 import { User } from 'src/user/database/user.schema';
+import { Character } from '../database/character.schema';
+import { CharacterSubset } from 'src/constants/characterSubset';
 
 @Injectable()
 export class CharacterService {
@@ -27,8 +29,13 @@ export class CharacterService {
     return `This action returns all character`;
   }
 
-  async findOne(request: Request) {
-    const user = request.user as User;
+  async findOne(requestOrUser: Request | User): Promise<CharacterSubset> {
+    let user: User;
+    if ('user' in requestOrUser) {
+      user = requestOrUser.user as User;
+    } else {
+      user = requestOrUser as User;
+    }
     const character = await this.characterRepository.findCharacter(user);
 
     return character;

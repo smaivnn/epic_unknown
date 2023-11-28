@@ -8,6 +8,7 @@ import {
   Res,
   Req,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/constants/role.enum';
 import { Response, Request } from 'express';
@@ -18,6 +19,7 @@ import { JwtAuthGuard } from '../jwt/access-auth.guard';
 import { RolesGuard } from 'src/guards/Roles.guard';
 import { RefreshAuthGuard } from '../jwt/refresh-auth.guards';
 
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}

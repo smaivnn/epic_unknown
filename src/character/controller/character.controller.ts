@@ -9,6 +9,7 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
 import { CharacterService } from '../service/character.service';
 import { StatService } from 'src/stat/service/stat.service';
@@ -17,6 +18,7 @@ import { UpdateCharacterDto } from '../dto/update-character.dto';
 import { JwtAuthGuard } from 'src/auth/jwt/access-auth.guard';
 import { BasicStat } from '../../constants/stats.constants';
 
+@ApiTags('Character')
 @UseGuards(JwtAuthGuard)
 @Controller('character')
 export class CharacterController {

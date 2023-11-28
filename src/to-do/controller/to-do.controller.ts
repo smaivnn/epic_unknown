@@ -8,6 +8,7 @@ import {
   UseGuards,
   Req,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
 import { ToDoService } from '../service/to-do.service';
 import { CreateToDoDto } from '../dto/create-to-do.dto';
@@ -16,6 +17,7 @@ import { SingleToDoDto } from '../dto/single-to-do.dto';
 import { ChangeTodoPriorityDto } from '../dto/priority-to-do.dto';
 import { JwtAuthGuard } from 'src/auth/jwt/access-auth.guard';
 
+@ApiTags('ToDo')
 @UseGuards(JwtAuthGuard)
 @Controller('todos')
 export class ToDoController {

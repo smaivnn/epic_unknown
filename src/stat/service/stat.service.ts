@@ -1,7 +1,8 @@
+import { CharacterService } from 'src/character/service/character.service';
 import { Request } from 'express';
 import { CharacterRepository } from 'src/character/database/character.repository';
 import { StatRepository } from 'src/stat/database/stat.repository';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Type } from '@nestjs/common';
 import { CreateStatDto } from '../dto/create-stat.dto';
 import { UpdateStatDto } from '../dto/update-stat.dto';
 import { CategorizeDto } from '../dto/categorize-stat.dto';
@@ -11,6 +12,8 @@ import { TodoCategory } from 'src/constants/category.enum';
 import { CalculateDifficultyDto } from '../dto/calculate-difficulty.dto';
 import { ToDo } from 'src/to-do/database/to-do.schema';
 import { ToDoRepository } from 'src/to-do/database/to-do.repository';
+import { User } from 'src/user/database/user.schema';
+import { experiencePerLevel } from 'src/constants/level';
 
 interface RequestWithCharacterId extends Request {
   character?: Character;
@@ -26,7 +29,7 @@ function isStatName(name: string): name is StatName {
 export class StatService {
   constructor(
     private readonly statRepository: StatRepository,
-    private readonly characterRepository: CharacterRepository,
+    private readonly characterService: CharacterService,
     private readonly toDoRepository: ToDoRepository,
   ) {}
 
@@ -138,5 +141,30 @@ export class StatService {
 
   remove(id: number) {
     return `This action removes a #${id} stat`;
+  }
+
+  async addExpereincePoint(
+    user: User,
+    experiencePoint: number,
+    statName: string[],
+  ): Promise<void> {
+    const character = await this.characterService.findOne(user);
+    const characterId = character._id;
+
+    await Promise.all(
+      statName.map(async (name) => {
+        const stat = await this.statRepository.findStatByCharacterIdAndStatName(
+          characterId,
+          name,
+        );
+
+        const updatedStat = await this.statRepository.updateStatExp(
+          stat,
+          experiencePoint,
+        );
+
+        return updatedStat;
+      }),
+    );
   }
 }
