@@ -92,7 +92,8 @@ export class ToDoRepository {
         },
       )
       .exec();
-    if (removedToDo) {
+
+    if (removedToDo.status === false) {
       this.decreasePriority(removedToDo, todoId, userId);
     }
 

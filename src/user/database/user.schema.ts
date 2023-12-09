@@ -74,11 +74,25 @@ export class User extends Document {
   @IsArray()
   roles: string[];
 
+  @ApiProperty({
+    example: [],
+    description: 'Array of post IDs that the user has liked',
+    required: false,
+    type: [String],
+  })
+  @Prop({
+    type: [String],
+    default: [],
+  })
+  @IsArray()
+  likedPosts: string[];
+
   readonly readOnlyData: {
     _id: string;
     email: string;
     name: string;
     roles: string[];
+    likedPosts: string[];
   };
 }
 
@@ -90,6 +104,7 @@ _UserSchema.virtual('readOnlyData').get(function (this: User) {
     email: this.email,
     name: this.name,
     roles: this.roles,
+    likedPosts: this.likedPosts,
   };
 });
 

@@ -19,4 +19,31 @@ export class UserRepository {
     const foundUserList = await this.userModel.find();
     return foundUserList;
   }
+
+  async findUserById(id: string): Promise<User | null> {
+    const foundUser = await this.userModel
+      .findOne({ _id: id })
+      .select('-password');
+
+    return foundUser;
+  }
+
+  async updateLikedPost(user: User, index: number, postId: string) {
+    let updatedUser;
+    if (index === -1) {
+      updatedUser = await this.userModel.findOneAndUpdate(
+        { _id: user._id },
+        { $push: { likedPosts: postId } },
+        { new: true },
+      );
+    } else {
+      updatedUser = await this.userModel.findOneAndUpdate(
+        { _id: user._id },
+        { $pull: { likedPosts: postId } },
+        { new: true },
+      );
+    }
+
+    return updatedUser;
+  }
 }

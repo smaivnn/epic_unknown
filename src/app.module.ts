@@ -9,6 +9,10 @@ import { ToDoModule } from './to-do/to-do.module';
 import { CharacterModule } from './character/character.module';
 import { StatModule } from './stat/stat.module';
 import { HistoryModule } from './history/history.module';
+import { CommentModule } from './comment/comment.module';
+import { PostModule } from './post/post.module';
+import { ViewModule } from './view/view.module';
+import { VoteModule } from './vote/vote.module';
 
 @Module({
   imports: [
@@ -32,6 +36,10 @@ import { HistoryModule } from './history/history.module';
     CharacterModule,
     StatModule,
     HistoryModule,
+    CommentModule,
+    PostModule,
+    ViewModule,
+    VoteModule,
   ],
   controllers: [AppController],
   providers: [AppService],

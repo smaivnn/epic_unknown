@@ -25,10 +25,6 @@ export class CharacterService {
     return createdCharacter.readOnlyData;
   }
 
-  findAll() {
-    return `This action returns all character`;
-  }
-
   async findOne(requestOrUser: Request | User): Promise<CharacterSubset> {
     let user: User;
     if ('user' in requestOrUser) {
@@ -39,14 +35,6 @@ export class CharacterService {
     const character = await this.characterRepository.findCharacter(user);
 
     return character;
-  }
-
-  update(id: number, updateCharacterDto: UpdateCharacterDto) {
-    return `This action updates a #${id} character`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} character`;
   }
 
   async addStatsToCharacter(

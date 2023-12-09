@@ -18,7 +18,9 @@ export class AuthRepository {
   async validateUserByIdWithoutPassword(
     userId: string | Types.ObjectId,
   ): Promise<User | null> {
-    const foundUser = await this.userModel.findById(userId).select('-password');
+    const foundUser = await this.userModel
+      .findById(userId)
+      .select('-password -refreshToken -latestIp -__v');
     return foundUser;
   }
 

@@ -1,8 +1,7 @@
 import { CharacterService } from 'src/character/service/character.service';
 import { Request } from 'express';
-import { CharacterRepository } from 'src/character/database/character.repository';
 import { StatRepository } from 'src/stat/database/stat.repository';
-import { Injectable, Type } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateStatDto } from '../dto/create-stat.dto';
 import { UpdateStatDto } from '../dto/update-stat.dto';
 import { CategorizeDto } from '../dto/categorize-stat.dto';
@@ -13,7 +12,6 @@ import { CalculateDifficultyDto } from '../dto/calculate-difficulty.dto';
 import { ToDo } from 'src/to-do/database/to-do.schema';
 import { ToDoRepository } from 'src/to-do/database/to-do.repository';
 import { User } from 'src/user/database/user.schema';
-import { experiencePerLevel } from 'src/constants/level';
 
 interface RequestWithCharacterId extends Request {
   character?: Character;
@@ -52,15 +50,7 @@ export class StatService {
     return createdStat.readOnlyData;
   }
 
-  findAll() {
-    return `This action returns all stat`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} stat`;
-  }
-
-  categorizeStats(body: CategorizeDto) {
+  async categorizeStats(body: CategorizeDto) {
     if (body.category === TodoCategory.Other) {
       // chatGpt를 통해 stat을 분류하는 코드를 여기에 작성합니다.
       // 예: const stat = chatGpt.classify(body);
@@ -133,14 +123,6 @@ export class StatService {
     await this.toDoRepository.updateTodoContinue(completedToDo, continueValue);
 
     return continueValue >= 3 ? Math.min(continueValue, 10) : 0;
-  }
-
-  update(id: number, updateStatDto: UpdateStatDto) {
-    return `This action updates a #${id} statd`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} stat`;
   }
 
   async addExpereincePoint(

@@ -49,25 +49,7 @@ export class CharacterController {
   }
 
   @Get()
-  findAll() {
-    return this.characterService.findAll();
-  }
-
-  @Get('id')
   findOne(@Req() request: Request) {
     return this.characterService.findOne(request);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateCharacterDto: UpdateCharacterDto,
-  ) {
-    return this.characterService.update(+id, updateCharacterDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.characterService.remove(+id);
   }
 }

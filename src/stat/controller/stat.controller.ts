@@ -37,24 +37,4 @@ export class StatController {
 
     return await this.characterService.addStatsToCharacter(characterId, _id);
   }
-
-  @Get()
-  findAll() {
-    return this.statService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.statService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateStatDto: UpdateStatDto) {
-    return this.statService.update(+id, updateStatDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.statService.remove(+id);
-  }
 }
