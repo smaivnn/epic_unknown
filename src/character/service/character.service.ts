@@ -47,4 +47,15 @@ export class CharacterService {
     );
     return character;
   }
+
+  async findManyCharactersByCharacterIds(characterIds: Types.ObjectId[]) {
+    const characters =
+      await this.characterRepository.findManyCharactersByCharacterIds(
+        characterIds,
+      );
+    return characters.map((character) => {
+      const { _id, userId, name } = character;
+      return { _id, userId, name };
+    });
+  }
 }

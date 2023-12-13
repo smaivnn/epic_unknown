@@ -87,4 +87,16 @@ export class CharacterRepository {
       stats: transformedStats,
     };
   }
+
+  async findManyCharactersByCharacterIds(characterIds: Types.ObjectId[]) {
+    const foundCharacters = await this.characterModel
+      .find(
+        {
+          _id: { $in: characterIds },
+        },
+        { _id: 1, name: 1, userId: 1 },
+      )
+      .exec();
+    return foundCharacters;
+  }
 }

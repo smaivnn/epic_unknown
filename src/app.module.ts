@@ -13,6 +13,8 @@ import { CommentModule } from './comment/comment.module';
 import { PostModule } from './post/post.module';
 import { ViewModule } from './view/view.module';
 import { VoteModule } from './vote/vote.module';
+import { FriendModule } from './friend/friend.module';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
@@ -40,6 +42,8 @@ import { VoteModule } from './vote/vote.module';
     PostModule,
     ViewModule,
     VoteModule,
+    FriendModule,
+    ChatModule,
   ],
   controllers: [AppController],
   providers: [AppService],
